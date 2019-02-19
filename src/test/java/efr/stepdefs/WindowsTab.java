@@ -32,14 +32,12 @@ class WindowsTab {
         newWindowsSet = this.driver.getWindowHandles();
         newWindowsSet.removeAll(oldWindowsSet);
         newWindowHandle = (new WebDriverWait(driver, 10))
-                .until(new ExpectedCondition<String>() {
-                           public String apply(WebDriver driver) {
-                               Set<String> newWindowsSet = driver.getWindowHandles();
-                               newWindowsSet.removeAll(oldWindowsSet);
-                               return newWindowsSet.size() > 0 ?
-                                       newWindowsSet.iterator().next() : null;
-                           }
-                       }
+                .until((ExpectedCondition<String>) driver1 -> {
+                    Set<String> newWindowsSet = driver1.getWindowHandles();
+                    newWindowsSet.removeAll(oldWindowsSet);
+                    return newWindowsSet.size() > 0 ?
+                            newWindowsSet.iterator().next() : null;
+                }
                 );
         return newWindowHandle;
     }

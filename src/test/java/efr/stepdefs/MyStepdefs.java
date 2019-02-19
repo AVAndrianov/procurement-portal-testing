@@ -1,9 +1,11 @@
 package efr.stepdefs;
 
+
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -27,8 +29,6 @@ public class MyStepdefs {
     private String first_title;
     private String firstVacancyName;
     private String name;
-    //    private String maxSum;
-//    private String minSum;
     private SearchSettings searchSettings;
     private int pageNumber2;
     private int pageNumber;
@@ -44,7 +44,7 @@ public class MyStepdefs {
         driver
                 .manage().
                 timeouts().
-                implicitlyWait(2, TimeUnit.SECONDS);
+                implicitlyWait(1, TimeUnit.SECONDS);
         driver.
                 manage().
                 timeouts().
@@ -52,15 +52,7 @@ public class MyStepdefs {
         driver.
                 manage().
                 timeouts().
-                setScriptTimeout(2, TimeUnit.SECONDS);
-        main_title = "Госслужба";
-        first_title = "Госслужба/Вакансии";
-        firstVacancyName = "Госслужба/Вакансии/";
-        name = "НИОКР";
-//        maxSum = "300000000";
-//        minSum = "100";
-
-
+                setScriptTimeout(1, TimeUnit.SECONDS);
     }
 
     @After
@@ -73,227 +65,91 @@ public class MyStepdefs {
         windowsTab = new WindowsTab();
         windowsTab.
                 setMainWindowHandle(driver);
-//        stepDefs = new StepDefs();
-
-//        getStepDefs().goToUrl("https://gossluzhba.gov.ru/");
         driver.get(URL);
     }
 
     @When("^пользователь проверяет, что находится на странице \"([^\"]*)\"$")
-    public void elementTextTitleMain(String titleName) throws PageInitializationException {
-        if (titleName.equals("Вакансии")) titleName = first_title;
-        if (titleName.equals("Первая вакансия")) titleName = firstVacancyName;
+    public void elementTextTitleMain(String titleName) {
 
         checkPageCorrect(driver, titleName);
-//        stepDefs.openPage(titleName);
-
     }
 
-    @And("^пользователь проверяет, что элемент \"Ваканисии\" виден$")
-    public void elementDisplayVacancy() throws NoSuchMethodException, PageInitializationException {
-        try {
-            waitElement(driver, By.cssSelector("body > div.container > div > div " +
-                    "> nav > ul.nav.nav-pills.main-menu " +
-                    "> li:nth-child(3) > a"), 10);
-        } catch (Exception e) {
-            System.out.println("Элемент не найден");
-        }
-//        stepDefs.userActionOneParam("нажимает кнопку", "Ваканисии");
+    @Then("^пользователь \\(нажимает кнопку\\) в выподающем меню Организации с параметром Реестр зарегистрированных организаций$")
+    public void pressButtonRegisterOfRegisteredOrganizations() {
 
-    }
-
-    @And("^пользователь \\(нажимает кнопку\\) с параметром \"Ваканисии\"$")
-    public void pressButtonVacancy() {
-        driver.
-                findElement(By.cssSelector("body > div.container > div > div " +
-                        "> nav > ul.nav.nav-pills.main-menu " +
-                        "> li:nth-child(3) > a")).click();
-    }
-
-    //Task2
-    @And("^пользователь переходит на страницу расширенного поиска по сайту$")
-    public void searchForm() {
-        driver.
-                findElement(By.cssSelector("button.search__btn")).
-                click();
-        driver.
-                findElement(By.cssSelector("a.extendedSearchLink.floatRight")).
-                click();
-    }
-
-    //smokeTest.zakupki.gov.ru
-    @And("^пользователь совершает, logIn$")
-    public void loginForm() {
-        actions = new Actions(driver);
-        actions.moveToElement(driver.
-                findElement(By.cssSelector("body > header.header.header-top " +
-                        "> div > div > div:nth-child(4) > div > div " +
-                        "> span.text.padLeft4"))).build().perform();
-    }
-
-    //smokeTest.zakupki.gov.ru
-    @And("^пользователь совершает, logOut$")
-    public void logoutForm() {
-
-    }
-
-    //smokeTest.zakupki.gov.ru
-    @And("^пользователь проверяет, работоспособность List Menu$")
-    public void listMenu() {
-        actions = new Actions(driver);
-        actions.moveToElement(driver.
-                findElement(By.cssSelector("body > header.header.header-bottom " +
-                        "> div > div > div > div > ul > ul > li:nth-child(3) > a"))).
-                build().perform();
-        driver.
-                findElement(By.cssSelector("body > header.header.header-bottom " +
-                        "> div > div > div > div > ul > ul > li:nth-child(3) " +
-                        "> ul > li > ul > li:nth-child(4) > a > span.link__text")).
-                click();
-        checkPageCorrect(driver, "Дополнительная информация о закупках, контрактах");
-
+        Actions actions = new Actions(driver);
         actions.moveToElement(driver.
                 findElement(By.cssSelector("body > header.header.header-bottom " +
                         "> div > div > div > div > ul > ul > li:nth-child(4) > a"))).
                 build().perform();
         driver.
                 findElement(By.cssSelector("body > header.header.header-bottom " +
-                        "> div > div > div > div > ul > ul > li:nth-child(4) > ul " +
-                        "> li > ul > li:nth-child(2) > a > span.link__text")).
+                        "> div > div > div > div > ul > ul > li:nth-child(4) " +
+                        "> ul > li > ul > li:nth-child(1) > a > span.link__text")).
                 click();
-        checkPageCorrect(driver, "Результаты поиска");
+    }
 
-        actions.moveToElement(driver.
-                findElement(By.cssSelector("body > header.header.header-bottom " +
-                        "> div > div > div > div > ul > ul > li:nth-child(8) > a"))).
-                build().perform();
+    @Then("^пользователь \\(нажимает кнопку\\) Уточнить параметры поиска$")
+    public void pressButtonRefineYourSearch() {
         driver.
-                findElement(By.cssSelector("#menu-column-templateADDITIONAL_INFO0 " +
-                        "> ul:nth-child(5) > div:nth-child(1) > li > a > span.link__text")).
-                click();
-        checkPageCorrect(driver, "Документы");
-    }
-
-    //Task2
-    @And("^пользователь заполняет форму, минималтьная сумма (\\d+) и максимальная сумма (\\d+)$")
-    public void fillFormMinAndMaxSum(String minSum, String maxSum) {
-        searchSettings = new SearchSettings(driver);
-        //Заполнение поля максимальная сумма
-        searchSettings.
-                fillInputField(driver,
-                        By.cssSelector("#priceToGeneral"), maxSum);
-        //Заполнение поля минимальная сумма
-        searchSettings.
-                fillInputField(driver,
-                        By.cssSelector("#priceFromGeneral"), minSum);
-        //Заполнение поля Закупки
-        searchSettings.
-                fillInputField(driver,
-                        By.cssSelector("#searchString.autocompleteOrder" +
-                                ".hint.clearValue.withoutAutocomplete"), name);
-        //Выбор валюты
-        driver.findElement(By.cssSelector("div.pseudoSelect.greyText")).
+                findElement(By.cssSelector("#setParametersLink > a")).
                 click();
     }
 
-    //Task2
-    @And("^пользователь заполняет форму$")
+    @Then("^пользователь заполняет форму$")
     public void fillForm() {
+        searchSettings = new SearchSettings(driver);
+        name = "университет";
+        searchSettings.
+                fillInputField(driver,
+                        By.cssSelector("#searchString"), name);
 
+        WebElement FZ44 = driver.
+                findElement(By.cssSelector("#fz94"));
+        if (!FZ44.isSelected())
+            FZ44.click();
 
-        ((JavascriptExecutor) driver).
-                executeScript("document.getElementById('1').click()");
-        //Способ определения поставщика, подрядной организации
-        try {
-            driver.
-                    findElement(By.xpath("//li[@id='placingWaysTag']/div/div/span")).
-                    click();
+        WebElement FZ223 = driver.
+                findElement(By.cssSelector("#fz223"));
+        if (FZ223.isSelected())
+            FZ223.click();
 
-            ((JavascriptExecutor) driver).
-                    executeScript("document.getElementById('placingWay_ZKKD44').click()");
+        WebElement showBlockedOrganizations = driver.
+                findElement(By.cssSelector("#withBlocked"));
+        if (showBlockedOrganizations.isSelected())
+            showBlockedOrganizations.click();
 
-            ((JavascriptExecutor) driver).
-                    executeScript("document.getElementById('placingWay_KESMBO').click()");
+        WebElement organizationSeparateStructuralUnit = driver.
+                findElement(By.cssSelector("#svrDivision"));
+        if (!organizationSeparateStructuralUnit.isSelected())
+            organizationSeparateStructuralUnit.click();
 
-            ((JavascriptExecutor) driver).
-                    executeScript("document.getElementById('placingWay_OKD504').click()");
+        driver.
+                findElement(By.cssSelector("#organizationLevelTag > div > div.collapsed.height30 " +
+                        "> span.msExpandButton")).
+                click();
+        ((JavascriptExecutor) driver).executeScript("document.getElementById('F').click()");
+        ((JavascriptExecutor) driver).executeScript("document.getElementById('organizationLevelTagSelectBtn')" +
+                ".getElementsByClassName('btnBtn blueBtn')[0].click()");
 
-            ((JavascriptExecutor) driver).
-                    executeScript("document.getElementById('placingWay_ZKKU44').click()");
-
-            ((JavascriptExecutor) driver).
-                    executeScript("document.getElementById('placingWay_ZKK44').click()");
-
-            ((JavascriptExecutor) driver).
-                    executeScript("document.getElementById('placingWay_OK').click()");
-
-            ((JavascriptExecutor) driver).
-                    executeScript("document.getElementById('placingWay_OK44').click()");
-
-            ((JavascriptExecutor) driver).
-                    executeScript("document.getElementById('placingWay_OKD44').click()");
-
-            ((JavascriptExecutor) driver).
-                    executeScript("document.getElementById('placingWay_OKU44').click()");
-
-            ((JavascriptExecutor) driver).
-                    executeScript("document.getElementById('placingWay_OK504').click()");
-
-            ((JavascriptExecutor) driver).
-                    executeScript("document.getElementById('placingWay_SZ').click()");
-
-            ((JavascriptExecutor) driver).
-                    executeScript("document.getElementById('placingWaysSelectBtn').click()");
-        } catch (Exception e) {
-            System.out.println("Способ определения поставщика, подрядной организации: " +
-                    "в списке отсутвуют искомые поля для выбора.");
-        }
-        //Этап закупки:
-//        driver.findElement(By.xpath("//li[@id='orderStages']/div/div/span")).click();
-//        ((JavascriptExecutor)driver).executeScript("document.getElementById('ca').click()");
-//        ((JavascriptExecutor)driver).executeScript("document.getElementById('pc').click()");
-//        ((JavascriptExecutor)driver).executeScript("document.getElementById('pa').click()");
-//        ((JavascriptExecutor)driver).executeScript("document.getElementById('orderStagesSelectBtn')" +
-//                ".getElementsByClassName('btnBtn blueBtn')[0].click()");
     }
 
-
-    @And("^пользователь проверяет, что элемент \"Первая вакансия\" виден$")
-    public void elementDisplayFirstVacancy() {
-        try {
-            waitElement(driver, By.cssSelector("body > div.container " +
-                    "> div:nth-child(4) > div.col-xs-8 > a:nth-child(1) " +
-                    "> div > p.title"), 10);
-        } catch (Exception e) {
-            System.out.println("Элемент не найден");
-        }
-    }
-
-    @And("^пользователь \\(нажимает кнопку\\) с параметром \"Первая вакансия\"$")
-    public void pressButtonFirstVacancy() {
-        firstVacancyName = firstVacancyName + driver.findElement(
-                By.cssSelector("body > div.container > div:nth-child(4) " +
-                        "> div.col-xs-8 > a:nth-child(1) > div > p.title")).getText();
-        driver.findElement(By.cssSelector("body > div.container " +
-                "> div:nth-child(4) > div.col-xs-8 > a:nth-child(1) " +
-                "> div > p.title")).click();
-    }
-
-    @And("^пользователь \\(нажимает кнопку\\) с параметром \"Найти\"$")
-    public void pressButtonSearch() {
-        driver.findElement(By.cssSelector("span.bigOrangeBtn.searchBtn")).
+    @Then("^пользователь \\(нажимает кнопку\\) с параметром Уточнить результаты$")
+    public void pressButtonRefineResults() {
+        driver.
+                findElement(By.cssSelector("#searchButtonsBlock > div > span.bigOrangeBtn.margLeft20")).
                 click();
     }
 
-    //Task2
-    @And("^пользователь выставляет количество отображаемых элеиентов поиска на страние равное (\\d+)$")
-    public void pressPageSelect(String a) {
+    @Then("^пользователь сохраняет в файл данные по каждому результату поиска Сокращенное наименование, Дата регистрации и Место нахождения$")
+    public void rrr() {
+
         wait = new WebDriverWait(driver, 1);
 
         driver.findElement(By.cssSelector("li.pageSelect")).
                 click();
         ((JavascriptExecutor) driver).
-                executeScript("document.getElementById('_" + a + "').click()");
+                executeScript("document.getElementById('_" + 20 + "').click()");
         try {
             Thread.sleep(2000);
         } catch (
@@ -303,14 +159,9 @@ public class MyStepdefs {
 
         //Определяю количество страниц
         pageNumber2 = determineTheNumberOfPages();
-    }
-
-    //Task2
-    @And("^пользователь заходит собирает нужные данные и сохраняет в текстовый файл (\\d+)$")
-    public void rrr(String fileName) {
-        boolean flag = true;
-        try (
-                FileOutputStream fos = new FileOutputStream(System.getProperty("user.dir") + "/notes" + fileName + ".txt")) {
+        System.out.println(pageNumber2);
+        FileOutputStream fos;
+        try {
             int i = 1;
             while (i <= pageNumber2) {
                 //При переходе на вторую страницу слева появляется элемент в виде стрелки и счет сдивигается на 1
@@ -322,95 +173,55 @@ public class MyStepdefs {
                     e.printStackTrace();
                 }
                 if (pageNumber2 != 1)
-                    driver.findElement(By.cssSelector("body > div.parametrs.margBtm10 " +
+                    driver.findElement(By.cssSelector("body > div.parametrs.margBtm10 > div " +
                             "> div.paginator.greyBox.extendedVariant.margBtm20 " +
-                            "> div.paginator.greyBox > ul > li:nth-child(" + i + ")")).click();
+                            "> div.paginator.greyBox > ul > li:nth-child(" + i + ") > a > span")).click();
                 i++;
-                WebElement sum;
                 String nameOfPurchase;
                 String applicationDeadline;
                 String contactPerson;
-                String electronicSignature;
-                for (int j = 0; j < driver.findElements(By.cssSelector("dd > strong")).size(); j++) {
-                    sum = driver.findElements(By.cssSelector("dd > strong")).get(j);
+                for (int j = 0; j < driver.findElements(By.cssSelector("dl.docInfo > dt > span")).size(); j++) {
+                    fos = new FileOutputStream(System.getProperty("user.dir") + "/notes" + j + i + ".txt");
                     windowsTab.setOldWindowsSet(driver);
                     driver.
-                            findElement(By.cssSelector("div:nth-child(" + (j + 3) + ") " +
-                                    "> div.reportBox > ul > ul > li:nth-child(1) > a")).click();
+                            findElement(By.cssSelector("#exceedSphinxPageSizeDiv > div:nth-child(" + (j + 1) + ") " +
+                                    "> div > ul > li:nth-child(1) > a")).
+                            click();
                     driver.switchTo().window(windowsTab.getNewWindowHandle(driver));
-
                     try {
-                        contactPerson = driver.findElement(By.cssSelector("body > div.cardWrapper > div " +
-                                "> div > div.cardWrapper > div > div > div.contentTabBoxBlock " +
-                                "> div.noticeTabBox.padBtm20 > div:nth-child(6) > table > tbody " +
-                                "> tr:nth-child(2) > td:nth-child(2)")).getText();
+                        contactPerson = driver.findElement(By.cssSelector("#tab-info > div:nth-child(2) > div > table > tbody > tr:nth-child(2) > td:nth-child(2)")).getText();
                         nameOfPurchase = driver.
-                                findElement(By.cssSelector("body > div.cardWrapper " +
-                                        "> div > div > div.cardWrapper > div > div > div.contentTabBoxBlock " +
-                                        "> div.noticeTabBox.padBtm20 > div:nth-child(2) > table > tbody > tr:nth-child(4) " +
-                                        "> td:nth-child(2)\n")).getText();
+                                findElement(By.cssSelector("#tab-info > div:nth-child(2) > div > table > tbody > tr:nth-child(4) > td:nth-child(2)")).getText();
                         applicationDeadline = driver.
                                 findElement(
-                                        By.cssSelector("body > div.cardWrapper > div " +
-                                                "> div > div.cardWrapper > div > div > div.contentTabBoxBlock " +
-                                                "> div.noticeTabBox.padBtm20 > div:nth-child(10) > table > tbody " +
-                                                "> tr:nth-child(1) > td:nth-child(2)")).getText();
-                        flag = true;
+                                        By.cssSelector("#tab-info > div:nth-child(2) > div > table > tbody > tr:nth-child(10) > td:nth-child(2)")).getText();
                     } catch (Exception e) {
-                        contactPerson = driver.findElement(By.cssSelector("body > div > div > div " +
-                                "> div.contentTabBoxBlock > div > div:nth-child(4) > table > tbody " +
-                                "> tr:nth-child(4) > td:nth-child(2)")).getText();
-                        nameOfPurchase = driver.
-                                findElement(By.cssSelector("body > div > div > div > div.contentTabBoxBlock " +
-                                        "> div > div:nth-child(2) > table > tbody > tr:nth-child(5) " +
-                                        "> td:nth-child(2)")).getText();
-                        applicationDeadline = driver.
-                                findElement(
-                                        By.cssSelector("body > div > div > div > div.contentTabBoxBlock > div " +
-                                                "> div:nth-child(6) > table > tbody > tr:nth-child(2) " +
-                                                "> td:nth-child(2)")).getText();
-                        flag = false;
+                        try {
+                            contactPerson = driver.findElement(By.cssSelector("body > div > div > div > div:nth-child(5) > div > table > tbody > tr:nth-child(5) > td:nth-child(2)")).getText();
+                            nameOfPurchase = driver.
+                                    findElement(By.cssSelector("body > div > div > div > div:nth-child(5) > div > table > tbody > tr:nth-child(2) > td:nth-child(2)")).getText();
+                            applicationDeadline = driver.
+                                    findElement(
+                                            By.cssSelector("body > div > div > div > div:nth-child(5) > div > table > tbody > tr:nth-child(13) > td:nth-child(2)")).getText();
+                        } catch (Exception ee) {
+                            contactPerson = driver.findElement(By.cssSelector("#tab-info > div:nth-child(2) > div > table > tbody > tr:nth-child(2) > td:nth-child(2)")).getText();
+                            nameOfPurchase = driver.
+                                    findElement(By.cssSelector("#tab-info > div:nth-child(2) > div > table > tbody > tr:nth-child(3) > td:nth-child(2)")).getText();
+                            applicationDeadline = driver.
+                                    findElement(
+                                            By.cssSelector("#tab-info > div:nth-child(2) > div > table > tbody > tr:nth-child(8) > td:nth-child(2)")).getText();
+
+                        }
                     }
                     driver.close();
                     driver.
                             switchTo().
                             window(windowsTab.getMainWindowHandle());
-                    if (flag) {
-                        String URL = driver.
-                                findElement(By.cssSelector("div:nth-child(" + (j + 3) + ") > div.boxIcons " +
-                                        "> a.cryptoSignLink.linkPopUp.pWidth_840")).getAttribute("href");
-                        windowsTab.setOldWindowsSet(driver);
-                        ((JavascriptExecutor) driver).executeScript("window.open()");
-                        driver.switchTo().window(windowsTab.getNewWindowHandle(driver));
-                        driver.get(URL);
-                    } else {
-                        driver.
-                                findElement(By.cssSelector("div:nth-child(" + (j + 3) + ") > div.boxIcons " +
-                                        "> a.cryptoSignLink.linkPopUp.pWidth_840")).click();
-                    }
-                    driver.
-                            findElement(By.cssSelector("div.addingTbl.expandTbl.elSignBlock > table " +
-                                    "> tbody > tr.rowExpand > td:nth-child(1) > span")).click();
-                    electronicSignature = driver.
-                            findElement(By.cssSelector("tr.toggleTr.expandRow > td > div")).getText();
-                    if (flag) {
-                        driver.close();
-                        driver.
-                                switchTo().
-                                window(windowsTab.getMainWindowHandle());
-                    } else {
-                        driver.findElement(By.cssSelector("#modal-edsContainer > div > div.modal-header " +
-                                "> div > div.col-2.pl-0.text-right.margLeft19 > span > img")).click();
-                    }
                     byte[] buffer = (nameOfPurchase
-                            + System.lineSeparator()
-                            + sum.getText()
                             + System.lineSeparator()
                             + applicationDeadline
                             + System.lineSeparator()
                             + contactPerson
-                            + System.lineSeparator()
-                            + electronicSignature
                             + System.lineSeparator()
                             + System.lineSeparator()).
                             getBytes();
@@ -423,18 +234,6 @@ public class MyStepdefs {
             System.out.println(ex.getMessage());
         }
 
-    }
-
-    //проверяет наличие элемента на странице
-    private static Boolean waitElement(WebDriver driver, By by, int timeOutInSeconds) {
-        WebDriverWait wait = new WebDriverWait(driver, timeOutInSeconds);
-        try {
-            wait.until(ExpectedConditions.presenceOfElementLocated(by));
-            return true;
-        } catch (Exception e) {
-            System.out.println("Элемент '" + by + "' не доступен.");
-            return false;
-        }
     }
 
     //сравнивает титл страницы
@@ -450,25 +249,20 @@ public class MyStepdefs {
     //Определяю количество страниц
     private int determineTheNumberOfPages() {
         try {
-            pageNumber = driver.findElements(By.cssSelector("body > div.parametrs.margBtm10 " +
-                    "> div.paginator.greyBox.extendedVariant.margBtm20 " +
-                    "> div.paginator.greyBox > ul.pages > li.page")).
+            pageNumber = driver.findElements(By.cssSelector("body > div.parametrs.margBtm10 > div " +
+                    "> div.paginator.greyBox.extendedVariant.margBtm20 > div.paginator.greyBox " +
+                    "> ul > li")).
                     size();
+            System.out.println(pageNumber);
             String numberOfPages = driver.findElement(By.cssSelector("body > div.parametrs.margBtm10 " +
-                    "> div.paginator.greyBox.extendedVariant.margBtm20 " +
-                    "> div.paginator.greyBox > ul.pages > li:nth-child(" + pageNumber + ") > a")).
+                    "> div > div.paginator.greyBox.extendedVariant.margBtm20 > div.paginator.greyBox " +
+                    "> ul > li:nth-child(" + pageNumber + ") > a")).
                     getAttribute("data-pagenumber");
+            System.out.println(numberOfPages);
             return Integer.parseInt(numberOfPages);
         } catch (Exception e) {
             return 1;
         }
     }
 
-    public static StepDefs getStepDefs() {
-        if (null == stepDefs) {
-            stepDefs = new StepDefs();
-        }
-
-        return stepDefs;
-    }
 }
